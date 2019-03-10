@@ -4,6 +4,7 @@
 #include "ofxGui.h"
 #include "camThread.h"
 #include "timerThread.h"
+#include "ofxHttpUtils.h"
 
 class ofApp : public ofBaseApp{
 
@@ -54,4 +55,10 @@ class ofApp : public ofBaseApp{
 		string notification;
 		ofRectangle rNotification;
 		int count = 0;
+	
+		void newResponse(ofxHttpResponse & response);
+		ofxHttpUtils httpUtils;
+		string responseStr;
+		string requestStr;
+		string action_url;
 };

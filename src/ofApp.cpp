@@ -24,7 +24,17 @@ void ofApp::setup(){
 //
 //	videoInverted.allocate(camWidth, camHeight, OF_PIXELS_RGB);
 //	videoTexture.allocate(videoInverted);
-//	ofSetVerticalSync(true);
+	ofSetVerticalSync(true);
+	
+	action_url = "http://localhost:3000/question/questions?type=common";
+	ofAddListener(httpUtils.newResponseEvent,this,&ofApp::newResponse);
+	ofxHttpForm form;
+	form.action = action_url;
+	form.method = OFX_HTTP_GET;
+	httpUtils.addForm(form);
+
+	httpUtils.addForm(form);
+	httpUtils.start();
 	
 	questions.push_back("Do you like apple?");
 	questions.push_back("Do you like hiking?");
@@ -68,6 +78,10 @@ void ofApp::setup(){
 	
 	cam.camWidth 		= 1280;
 	cam.camHeight 		= 720;
+}
+
+void ofApp::newResponse(ofxHttpResponse & response){
+	responseStr = ofToString(response.status) + ": " + (string)response.responseBody;
 }
 
 //--------------------------------------------------------------
