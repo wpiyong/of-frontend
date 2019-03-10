@@ -97,16 +97,35 @@ void ofApp::update(){
 			cam.bSave = true;
 		}
 		if(mTimer.counter > 9000){
-			mTimer.stopTimer();
-			cam.stop();
-			bClicked = false;
+//			mTimer.stopTimer();
+//			cam.stop();
+//			bClicked = false;
 			count++;
 			if(count >= questions.size()){
-				currentQuestion = "Thank you!";
-				ofBitmapFont f;
-				r = f.getBoundingBox(currentQuestion, 0, 0);
-				currentFactors = {{0,0},{0,0},{0,0},{0,0}};
+//				currentQuestion = "Thank you!";
+//				ofBitmapFont f;
+//				r = f.getBoundingBox(currentQuestion, 0, 0);
+//				currentFactors = {{0,0},{0,0},{0,0},{0,0}};
+				//timer > 15 second, restart the question
+				if(mTimer.counter > 15000){
+					mTimer.stopTimer();
+					cam.stop();
+					bClicked = false;
+					count = 0;
+					currentQuestion = questions[count];
+					ofBitmapFont f;
+					r = f.getBoundingBox(currentQuestion, 0, 0);
+					currentFactors = factors[count];
+				} else {
+					currentQuestion = "Thank you!";
+					ofBitmapFont f;
+					r = f.getBoundingBox(currentQuestion, 0, 0);
+					currentFactors = {{0,0},{0,0},{0,0},{0,0}};
+				}
 			} else {
+				mTimer.stopTimer();
+				cam.stop();
+				bClicked = false;
 				currentQuestion = questions[count];
 				ofBitmapFont f;
 				r = f.getBoundingBox(currentQuestion, 0, 0);
@@ -144,6 +163,7 @@ void ofApp::draw(){
 	ofSetColor(10,10,10);
 	// draw question
 	if(!bClicked){
+		ofDrawBitmapString(ofToString(count + 1) + "/" + ofToString(questions.size()) , ofGetWidth() - 80, 100);
 		ofDrawBitmapString(currentQuestion, offsetX + (ofGetWidth() - offsetX - r.getWidth())/2, 150);
 	}
 //	ofSetColor(0);
@@ -237,7 +257,7 @@ void ofApp::keyPressed(int key){
 //			cam.start();
 //		}
 //	}
-//	
+//
 //	//reset recording, start new folder w. r-key
 //	if(key == 114) {
 //		cam.reset();
